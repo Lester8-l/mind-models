@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>100個思維模型 · 檀東東Tango</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#faf9f7; --paper:#f4f0e6; --charcoal:#14201b;
+  --ink-soft:#6b6256; --mute:#a8a6a0; --faint:#c9c6bd;
+  --forest:#2e5e4e; --forest-deep:#234839; --forest-soft:#3d6b58; --forest-tint:#e7efeb;
+  --gold:#b8893b; --gold-soft:#c9a464; --gold-pale:#e8d5a3;
+  --line:rgba(20,32,27,.1); --line-strong:rgba(20,32,27,.16);
+  --ease:cubic-bezier(0.22,0.61,0.36,1);
+  --font-serif:'Cormorant Garamond','Noto Serif TC','Songti TC','STSong',serif;
+  --font-ui:'Noto Sans TC',ui-sans-serif,system-ui,-apple-system,'PingFang TC','Microsoft JhengHei',sans-serif;
+  --radius-card:18px; --radius-pill:9999px; --radius-badge:4px;
+  --fs-h1:clamp(2.5rem,6vw,4rem); --fs-h2:clamp(1.9rem,4vw,2.6rem); --fs-h3:clamp(1.15rem,2vw,1.45rem);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--charcoal);font-family:var(--font-ui);line-height:1.7;font-weight:400;-webkit-font-smoothing:antialiased;font-size:clamp(1rem,1.05vw,1.0625rem)}
+::selection{background:rgba(184,137,59,.28)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+@media(max-width:720px){.wrap{padding:0 20px}}
+
+/* ===== 导航 ===== */
+nav{background:rgba(250,249,247,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:150}
+nav .wrap{display:flex;align-items:center;height:68px;gap:20px}
+.brand{display:flex;align-items:center;gap:9px;color:var(--charcoal);text-decoration:none;font-family:var(--font-serif);font-size:19px;font-weight:600;letter-spacing:.02em}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--gold);display:inline-block}
+.nav-meta{margin-left:auto;font-size:13.5px;color:var(--mute)}
+
+/* ===== Hero ===== */
+.hero{padding:clamp(52px,8vw,96px) 0 clamp(34px,5vw,60px)}
+.eyebrow{font-size:.8125rem;color:var(--gold);margin-bottom:22px;display:flex;align-items:center;gap:12px;letter-spacing:.14em;font-weight:600;text-transform:uppercase}
+.eyebrow::before{content:"";width:22px;height:1.5px;background:currentColor;opacity:.65}
+.hero h1{font-size:var(--fs-h1);font-weight:600;line-height:1.16;letter-spacing:0;color:var(--charcoal);font-family:var(--font-serif)}
+.hero .sub{margin-top:22px;font-size:17px;color:var(--ink-soft);max-width:640px;line-height:1.9}
+.hero-meta{margin-top:26px;display:flex;gap:20px;flex-wrap:wrap;font-size:14px;color:var(--mute)}
+.hero-meta span{display:inline-flex;align-items:center;gap:8px}
+.hero-meta span::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--gold-soft)}
+
+/* ===== 工具条：搜索 + 分类标签 ===== */
+.toolbar{position:sticky;top:68px;z-index:120;background:rgba(250,249,247,.9);backdrop-filter:blur(10px);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:16px 0}
+.toolbar .wrap{display:flex;flex-direction:column;gap:14px}
+.search-row{display:flex;gap:16px;align-items:center}
+.search-box{flex:1;display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:var(--radius-pill);padding:13px 22px;transition:border-color .25s var(--ease)}
+.search-box:focus-within{border-color:var(--gold)}
+.search-box svg{flex:none;opacity:.45}
+.search-box input{flex:1;background:none;border:none;outline:none;color:var(--charcoal);font-size:15px;font-family:var(--font-ui)}
+.search-box input::placeholder{color:var(--mute)}
+.result-count{font-size:14px;color:var(--mute);white-space:nowrap}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tab{font-size:14px;color:var(--ink-soft);background:transparent;border:1px solid var(--line-strong);border-radius:var(--radius-pill);padding:8px 18px;cursor:pointer;transition:.25s var(--ease);font-family:var(--font-ui);white-space:nowrap;display:inline-flex;align-items:center;gap:7px}
+.tab small{opacity:.6;font-size:12.5px}
+.tab:hover{color:var(--forest);border-color:var(--forest)}
+.tab.on{background:var(--forest);color:#f7f5f0;border-color:var(--forest)}
+.tab.on small{opacity:.85}
+
+/* ===== 分类简介 ===== */
+.cat-intro{margin:34px 0 6px;display:none}
+.cat-intro.show{display:block;animation:fade .4s var(--ease)}
+.cat-intro .ci-head{display:flex;align-items:center;gap:12px}
+.cat-intro .ci-bar{width:5px;height:30px;border-radius:3px;background:var(--cc,var(--forest))}
+.cat-intro h2{font-size:var(--fs-h2);font-weight:600;color:var(--charcoal);font-family:var(--font-serif);line-height:1.2}
+.cat-intro p{color:var(--ink-soft);font-size:15px;margin-top:10px;max-width:720px;line-height:1.85}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ===== 卡片网格 ===== */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(265px,1fr));gap:18px;padding:34px 0 90px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-card);padding:26px 26px 24px;cursor:pointer;transition:border-color .25s var(--ease),transform .25s var(--ease),box-shadow .25s var(--ease);display:flex;flex-direction:column;gap:11px;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--cc,var(--forest))}
+.card:hover{border-color:var(--gold-soft);transform:translateY(-3px);box-shadow:0 14px 30px rgba(20,32,27,.08)}
+.card .no{font-size:12.5px;color:var(--mute);letter-spacing:1px;font-family:var(--font-serif);font-weight:600}
+.card h3{font-size:20px;font-weight:600;line-height:1.4;color:var(--charcoal);font-family:var(--font-serif);letter-spacing:.01em}
+.card .tag{font-size:14.5px;color:var(--ink-soft);line-height:1.75;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.card .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto;padding-top:6px}
+.chip{font-size:12.5px;border-radius:var(--radius-pill);padding:3px 12px;color:#fff;background:var(--cc,var(--forest));white-space:nowrap}
+.empty{grid-column:1/-1;text-align:center;color:var(--mute);padding:70px 0;font-size:15px}
+
+/* ===== 详情（页内全屏，非弹窗） ===== */
+.detail{position:fixed;inset:0;z-index:200;background:var(--cream);overflow-y:auto;display:none}
+.detail.open{display:block;animation:fade .3s var(--ease)}
+.detail-bar{position:sticky;top:0;z-index:10;background:rgba(250,249,247,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.detail-bar .wrap{display:flex;align-items:center;height:66px;gap:18px}
+.back-btn{display:flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--line-strong);color:var(--charcoal);border-radius:var(--radius-pill);padding:10px 20px;font-size:14px;cursor:pointer;font-family:var(--font-ui);transition:.25s var(--ease)}
+.back-btn:hover{border-color:var(--forest);color:var(--forest)}
+.detail-bar .crumb{font-size:14px;color:var(--mute);letter-spacing:.04em}
+.detail-body{padding:clamp(40px,6vw,72px) 24px 120px;max-width:740px;margin:0 auto}
+.d-top{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--mute);margin-bottom:18px;flex-wrap:wrap}
+.d-top .no{color:var(--ink-soft);font-family:var(--font-serif);font-weight:600}
+.d-top .cat{background:var(--paper);color:var(--ink-soft);border-radius:var(--radius-badge);padding:3px 12px;font-size:13px}
+.d-title{font-size:var(--fs-h1);font-weight:600;line-height:1.18;letter-spacing:0;color:var(--charcoal);font-family:var(--font-serif);margin-bottom:14px}
+.d-tag{font-size:17px;color:var(--ink-soft);line-height:1.8;max-width:680px;margin-bottom:40px}
+.d-sec{margin-bottom:40px}
+.d-sec h4{font-size:.8125rem;color:var(--gold);margin-bottom:16px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.d-sec h4::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--cc,var(--gold))}
+.d-core{font-size:19px;line-height:1.9;color:var(--charcoal);max-width:680px;font-family:var(--font-serif);font-weight:500}
+.d-pts{list-style:none;display:flex;flex-direction:column;gap:13px;max-width:680px}
+.d-pts li{font-size:16.5px;color:var(--charcoal);padding-left:28px;position:relative;line-height:1.85}
+.d-pts li::before{content:"";position:absolute;left:4px;top:11px;width:9px;height:9px;border-radius:3px;background:var(--cc,var(--gold))}
+.d-text{font-size:16px;color:var(--charcoal);line-height:1.95;max-width:680px}
+.d-box{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-card);padding:22px 26px}
+.d-box p{font-size:16px;color:var(--charcoal);line-height:1.95;max-width:680px}
+.rel-chips{display:flex;flex-wrap:wrap;gap:9px}
+.rel-chip{border:1px solid var(--line-strong);border-radius:var(--radius-pill);padding:6px 16px;font-size:14px;cursor:pointer;color:var(--ink-soft);transition:.2s var(--ease);background:var(--cream)}
+.rel-chip:hover{border-color:var(--cc,var(--forest));color:var(--cc,var(--forest));background:var(--forest-tint)}
+.rel-chip.off{opacity:.45;cursor:default}
+.rel-chip.off:hover{border-color:var(--line-strong);color:var(--ink-soft);background:var(--cream)}
+.d-foot{border-top:1px dashed var(--line-strong);padding-top:22px;margin-top:8px;font-size:14.5px;color:var(--ink-soft)}
+.d-foot a{color:var(--forest);text-decoration:none;font-weight:500}
+.d-foot a:hover{text-decoration:underline}
+.d-next{margin-top:46px;padding-top:26px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.d-next a{color:var(--forest);text-decoration:none;font-family:var(--font-serif);font-size:17px;font-weight:600}
+.d-next a:hover{color:var(--forest-deep)}
+.d-next .lbl{font-size:12.5px;color:var(--mute);letter-spacing:.1em;text-transform:uppercase}
+
+footer{border-top:1px solid var(--line);padding:40px 0 60px;text-align:center;color:var(--mute);font-size:13.5px;line-height:1.9}
+footer a{color:var(--ink-soft);text-decoration:none}
+footer a:hover{color:var(--forest)}
+
+@media(max-width:640px){
+  .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:13px}
+  .card{padding:20px 18px}
+  .card h3{font-size:18px}
+  .search-row{flex-direction:column;align-items:stretch}
+  .result-count{text-align:center}
+  .detail-body{padding:36px 20px 90px}
+  .d-core{font-size:17.5px}
+}
+
+/* ===== 编辑 / 同步 UI（纸墨风） ===== */
+.nav-actions{display:flex;align-items:center;gap:8px}
+.mini-btn{position:relative;font-family:var(--font-ui);font-size:13px;color:var(--ink-soft);background:transparent;border:1px solid var(--line-strong);border-radius:var(--radius-pill);padding:7px 15px;cursor:pointer;transition:.22s var(--ease);white-space:nowrap}
+.mini-btn:hover{border-color:var(--forest);color:var(--forest)}
+.mini-btn.on{background:var(--forest);border-color:var(--forest);color:#f7f5f0}
+.mini-btn .dot-dirty{position:absolute;top:-3px;right:-3px;width:9px;height:9px;border-radius:50%;background:var(--gold);border:2px solid var(--cream);display:none}
+.mini-btn.dirty .dot-dirty{display:block}
+@media(max-width:720px){.nav-meta{display:none}.mini-btn{padding:6px 11px;font-size:12.5px}}
+
+/* 编辑模式提示条 */
+.edit-hint{display:none;align-items:center;gap:12px;margin:26px 0 -8px;padding:13px 20px;background:var(--forest-tint);border:1px solid rgba(46,94,78,.22);border-left:4px solid var(--forest);border-radius:10px;font-size:14px;color:var(--forest-deep)}
+.edit-hint.show{display:flex}
+.edit-hint .grow{flex:1}
+.new-btn{font-family:var(--font-ui);font-size:13.5px;color:#f7f5f0;background:var(--forest);border:1px solid var(--forest);border-radius:var(--radius-pill);padding:8px 18px;cursor:pointer;transition:.22s var(--ease);white-space:nowrap}
+.new-btn:hover{background:var(--forest-deep)}
+
+/* 卡片编辑角标 */
+body.editmode .card{cursor:pointer}
+body.editmode .card::after{content:"✎";position:absolute;right:14px;top:12px;font-size:14px;color:var(--gold);opacity:.75}
+
+/* ===== 编辑表单 ===== */
+.ed-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.ed-head h2{font-family:var(--font-serif);font-size:clamp(1.6rem,3.4vw,2.2rem);font-weight:600;color:var(--charcoal)}
+.ed-head .who{font-size:13.5px;color:var(--mute)}
+.ed-note{font-size:13.5px;color:var(--ink-soft);margin-bottom:30px;line-height:1.8}
+.f{margin-bottom:22px}
+.f > label{display:block;font-size:.75rem;color:var(--gold);letter-spacing:.13em;text-transform:uppercase;font-weight:600;margin-bottom:8px}
+.f .tipline{font-size:12.5px;color:var(--mute);margin-top:6px;line-height:1.7}
+.f input[type=text],.f select,.f textarea{width:100%;background:#fff;border:1px solid var(--line-strong);border-radius:10px;padding:12px 15px;font-family:var(--font-ui);font-size:15px;color:var(--charcoal);line-height:1.8;outline:none;transition:border-color .2s var(--ease)}
+.f textarea{resize:vertical;min-height:96px}
+.f input[type=text]:focus,.f select:focus,.f textarea:focus{border-color:var(--gold)}
+.f.ro input{background:var(--paper);color:var(--ink-soft)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.frow{grid-template-columns:1fr}}
+.ed-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:34px;padding-top:24px;border-top:1px solid var(--line)}
+.btn{font-family:var(--font-ui);font-size:14.5px;background:var(--forest);color:#f7f5f0;border:1px solid var(--forest);border-radius:var(--radius-pill);padding:11px 24px;cursor:pointer;transition:.22s var(--ease)}
+.btn:hover{background:var(--forest-deep)}
+.btn.ghost{background:transparent;color:var(--ink-soft);border-color:var(--line-strong)}
+.btn.ghost:hover{background:transparent;color:var(--forest);border-color:var(--forest)}
+.btn.danger{background:transparent;color:#a4543a;border-color:rgba(164,84,58,.4);margin-left:auto}
+.btn.danger:hover{background:rgba(164,84,58,.08);color:#8d452f;border-color:#a4543a}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+
+/* ===== 弹窗（仅同步设置用，详情页仍为页内全屏） ===== */
+.modal{position:fixed;inset:0;z-index:400;display:none;align-items:flex-start;justify-content:center;padding:6vh 18px;background:rgba(20,32,27,.42);backdrop-filter:blur(3px);overflow-y:auto}
+.modal.open{display:flex;animation:fade .22s var(--ease)}
+.modal-card{width:100%;max-width:540px;background:var(--cream);border:1px solid var(--line-strong);border-radius:16px;box-shadow:0 24px 60px rgba(20,32,27,.22);overflow:hidden}
+.modal-head{display:flex;align-items:center;gap:14px;padding:20px 26px;border-bottom:1px solid var(--line);background:var(--paper)}
+.modal-head h3{flex:1;font-family:var(--font-serif);font-size:20px;font-weight:600;color:var(--charcoal)}
+.x-btn{background:transparent;border:none;font-size:19px;color:var(--mute);cursor:pointer;line-height:1;padding:4px 6px}
+.x-btn:hover{color:var(--charcoal)}
+.modal-body{padding:24px 26px 26px}
+.modal-body .f{margin-bottom:16px}
+.modal-body input[type=text],.modal-body input[type=password]{width:100%;background:#fff;border:1px solid var(--line-strong);border-radius:9px;padding:10px 14px;font-family:var(--font-ui);font-size:14px;color:var(--charcoal);outline:none}
+.modal-body input:focus{border-color:var(--gold)}
+.chk{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;color:var(--ink-soft);line-height:1.7;margin:4px 0 18px;cursor:pointer}
+.chk input{margin-top:4px;accent-color:var(--forest)}
+.modal-actions{display:flex;gap:9px;flex-wrap:wrap}
+.modal-actions .btn{font-size:14px;padding:10px 20px}
+.sync-state{font-size:13px;color:var(--ink-soft);background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:11px 14px;margin-bottom:18px;line-height:1.75}
+.sync-state b{color:var(--forest-deep);font-weight:600}
+.sync-state .warn{color:#a4543a;font-weight:600}
+.log{margin-top:16px;max-height:150px;overflow-y:auto;background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:11px 13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:var(--ink-soft);line-height:1.75;white-space:pre-wrap;display:none}
+.log.show{display:block}
+.hint{font-size:12.5px;color:var(--mute);margin-top:14px;line-height:1.75}
+
+/* ===== toast ===== */
+.toast{position:fixed;left:50%;bottom:34px;transform:translate(-50%,16px);z-index:500;background:var(--charcoal);color:#f4f0e6;font-size:14px;padding:12px 22px;border-radius:var(--radius-pill);box-shadow:0 12px 30px rgba(20,32,27,.28);opacity:0;pointer-events:none;transition:.28s var(--ease);max-width:88vw;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast.err{background:#7e3a26}
+
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="dot"></span>100個思維模型</a>
+    <div class="nav-meta" id="navMeta"></div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="eyebrow">檀東東 Tango · 《100個思維模型》合集</div>
+    <h1>100 個思維模型<br>把複雜世界，拆成可學的招式</h1>
+    <p class="sub">從 B 站「檀東東Tango」《100個思維模型》合集轉寫整理。按「五根」分類——想清楚、做到位、說得好、帶得動、走得遠，學一個模型，多一把鑰匙。</p>
+    <div class="hero-meta">
+      <span id="metaCount">共收錄 — 個模型</span>
+      <span>五根分類 · 5 大維度</span>
+      <span>轉寫整理 · 便於檢索</span>
+    </div>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="wrap">
+    <div class="search-row">
+      <div class="search-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input id="q" type="text" placeholder="搜索模型名稱、關鍵詞（如：復盤、會議、決策）…">
+      </div>
+      <div class="result-count" id="rc"></div>
+    </div>
+    <div class="tabs" id="tabs"></div>
+  </div>
+</div>
+
+<main class="wrap" id="home">
+  <div class="cat-intro" id="catIntro"></div>
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer>
+  <div class="wrap">
+    內容來源：B 站「檀東東Tango」《100個思維模型》合集 · 本頁為轉寫整理版，僅供學習參考<br>
+    點擊任意模型卡片可查看完整拆解 · 按 <b>Esc</b> 或「返回」回到列表
+  </div>
+</footer>
+
+<!-- 详情（页内全屏，非弹窗） -->
+<div class="detail" id="detail">
+  <div class="detail-bar">
+    <div class="wrap">
+      <button class="back-btn" onclick="closeDetail()">← 返回列表</button>
+      <div class="crumb" id="crumb"></div>
+    </div>
+  </div>
+  <div class="detail-body" id="detailBody"></div>
+</div>
+
+<script src="data.js"></script>
+<script>
+/* 资料来自 data.js（CATS / MODELS），可单独编辑后刷新页面生效 */
+
+/* 五根对应的纸墨风配色（克制、自然） */
+const CAT_COLOR = {
+  "想清楚":"#3d6b58",
+  "做到位":"#b8893b",
+  "說得好":"#c2683f",
+  "帶得動":"#7a8a5c",
+  "走得遠":"#6b7fa3"
+};
+const cc = c => CAT_COLOR[c] || "#2e5e4e";
+
+const grid = document.getElementById('grid');
+const tabsEl = document.getElementById('tabs');
+const catIntro = document.getElementById('catIntro');
+const qInput = document.getElementById('q');
+const rc = document.getElementById('rc');
+const detail = document.getElementById('detail');
+const detailBody = document.getElementById('detailBody');
+const crumb = document.getElementById('crumb');
+
+let curCat = '全部';
+const byName = {};
+MODELS.forEach(m => { byName[m.name] = m; });
+const noMap = {};
+MODELS.forEach(m => { noMap[m.no] = m; });
+
+/* 顶部计数 */
+document.getElementById('metaCount').textContent = '共收錄 ' + MODELS.length + ' 個模型';
+document.getElementById('navMeta').textContent = MODELS.length + ' 個模型 · 五根分類';
+
+/* 分类标签 */
+const catNames = ['全部', ...Object.keys(CATS)];
+tabsEl.innerHTML = catNames.map(c=>{
+  const n = c==='全部' ? MODELS.length : MODELS.filter(m=>m.cat===c).length;
+  return `<div class="tab${c==='全部'?' on':''}" data-cat="${c}">${c}<small>${n}</small></div>`;
+}).join('');
+tabsEl.addEventListener('click', e=>{
+  const t = e.target.closest('.tab'); if(!t) return;
+  curCat = t.dataset.cat;
+  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on', x===t));
+  render();
+});
+qInput.addEventListener('input', render);
+
+function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+function render(){
+  const kw = qInput.value.trim().toLowerCase();
+  const list = MODELS.filter(m=>{
+    if(curCat!=='全部' && m.cat!==curCat) return false;
+    if(!kw) return true;
+    return (m.name+m.tag+m.thought+(m.points||[]).join('')+(m.scenes||[]).join('')+(m.explain||'')).toLowerCase().includes(kw);
+  });
+  // 分类简介
+  if(curCat!=='全部' && !kw){
+    catIntro.className='cat-intro show';
+    catIntro.innerHTML = `<div class="ci-head"><div class="ci-bar" style="background:${cc(curCat)}"></div><h2>${curCat}</h2></div><p>${esc(CATS[curCat].desc)}</p>`;
+  } else {
+    catIntro.className='cat-intro';
+    catIntro.innerHTML='';
+  }
+  rc.textContent = kw ? `找到 ${list.length} 個結果` : `${list.length} 個模型`;
+  if(!list.length){ grid.innerHTML = `<div class="empty">沒有找到匹配的模型，換個關鍵詞試試～</div>`; return; }
+  grid.innerHTML = list.map(m=>`
+    <div class="card" style="--cc:${cc(m.cat)}" onclick="openDetail('${m.no}')">
+      <div class="no">No.${esc(m.no)}</div>
+      <h3>${esc(m.name)}</h3>
+      <div class="tag">${esc(m.tag)}</div>
+      <div class="chips"><span class="chip">${esc(m.cat)}</span></div>
+    </div>`).join('');
+}
+
+function openDetail(no){
+  const m = noMap[no]; if(!m) return;
+  const color = cc(m.cat);
+  const relHtml = (m.related||[]).map(r=>{
+    const t = byName[r] || MODELS.find(x=>x.name.includes(r) || (r&&x.name&&r.includes(x.name)));
+    if(t) return `<span class="rel-chip" style="--cc:${cc(t.cat)}" onclick="event.stopPropagation();openDetail('${t.no}')">${esc(r)}</span>`;
+    return `<span class="rel-chip off">${esc(r)}</span>`;
+  }).join('');
+  const pts = (m.points||[]).map(p=>`<li>${esc(p)}</li>`).join('');
+  const scs = (m.scenes||[]).map(s=>`<li>${esc(s)}</li>`).join('');
+  // 下一个模型（按当前列表顺序）
+  const idx = MODELS.findIndex(x=>x.no===m.no);
+  const nx = MODELS[(idx+1)%MODELS.length];
+
+  detailBody.innerHTML = `
+    <div class="d-top">
+      <span class="no">No.${esc(m.no)}</span>
+      <span class="cat" style="color:${color}">${esc(m.cat)}</span>
+      <span>視頻 BV：${esc(m.bv)}</span>
+    </div>
+    <h1 class="d-title">${esc(m.name)}</h1>
+    <p class="d-tag">${esc(m.tag)}</p>
+
+    <div class="d-sec" style="--cc:${color}">
+      <h4>核心思想</h4>
+      <div class="d-box"><p>${esc(m.thought)}</p></div>
+    </div>
+
+    <div class="d-sec" style="--cc:${color}">
+      <h4>關鍵要點</h4>
+      <ul class="d-pts">${pts}</ul>
+    </div>
+
+    <div class="d-sec" style="--cc:${color}">
+      <h4>適用場景</h4>
+      <ul class="d-pts">${scs}</ul>
+    </div>
+
+    <div class="d-sec" style="--cc:${color}">
+      <h4>博主講解</h4>
+      <p class="d-text">${esc(m.explain)}</p>
+    </div>
+
+    <div class="d-sec" style="--cc:${color}">
+      <h4>延伸學習</h4>
+      <p class="d-text">${esc(m.extend)}</p>
+    </div>
+
+    <div class="d-sec" style="--cc:${color}">
+      <h4>實用提醒</h4>
+      <div class="d-box"><p>${esc(m.tips)}</p></div>
+    </div>
+
+    <div class="d-sec" style="--cc:${color}">
+      <h4>同根模型 · ${esc(m.cat)}</h4>
+      <div class="rel-chips">${relHtml}</div>
+    </div>
+
+    <div class="d-foot">📺 原視頻：<a href="https://www.bilibili.com/video/${esc(m.bv)}" target="_blank" rel="noopener">bilibili.com/video/${esc(m.bv)}</a>（檀東東Tango）</div>
+
+    <div class="d-next">
+      <span class="lbl">下一篇</span>
+      <a href="javascript:void(0)" onclick="event.preventDefault();openDetail('${nx.no}')">No.${esc(nx.no)} ${esc(nx.name)} →</a>
+    </div>
+  `;
+  crumb.textContent = m.cat + ' · No.' + m.no;
+  detail.classList.add('open');
+  document.body.style.overflow='hidden';
+  detail.scrollTop = 0;
+  window.scrollTo(0,0);
+}
+function closeDetail(){
+  detail.classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape' && detail.classList.contains('open')) closeDetail(); });
+
+render();
+</script>
+<script>
+/* ============================================================
+   網頁內編輯層：直接在頁面修改內容 → 存本地草稿 → 推送回 GitHub
+   資料來源為 data.js 的 CATS / MODELS（同一 global scope，直接原地改寫）
+   ============================================================ */
+const MM = {
+  editMode: false,
+  curNo: null,
+  LS: { draft:'mm_draft_v1', pushed:'mm_pushed_v1', cfg:'mm_gh_cfg_v1', token:'mm_gh_token_v1' },
+  FIELDS: ['no','name','cat','tag','bv','thought','points','scenes','explain','extend','tips','related'],
+  HEADER: '// 思维模型数据 · 来源：B站「檀東東Tango」《100個思維模型》合集转写整理\n'
+        + '// 修改内容只需编辑此文件并刷新页面，无需改动 handbook。\n'
+};
+window.MM = MM;
+
+/* ---------- 資料存取（供 console 調試 / 外部程式使用） ---------- */
+MM.models = () => MODELS;
+MM.cats = () => CATS;
+MM.get = no => noMap[no];
+
+/* ---------- 快照 / 序列化 ---------- */
+MM.snapshot = () => JSON.stringify({ CATS, MODELS });
+MM.serialize = () => MM.HEADER
+  + '// 最後更新：' + new Date().toLocaleString('zh-Hant') + '（由網頁編輯器寫入）\n'
+  + 'const CATS = ' + JSON.stringify(CATS, null, 2) + ';\n\n'
+  + 'const MODELS = ' + JSON.stringify(MODELS, null, 2) + ';\n';
+
+MM.fileSnap = MM.snapshot();               // data.js 載入時的內容
+MM.lsGet = k => { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch(e){ return null; } };
+MM.lsSet = (k,v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} };
+
+/* ---------- 資料整體替換（草稿載入 / 遠端拉取） ---------- */
+MM.applyData = (cats, models) => {
+  Object.keys(CATS).forEach(k => { delete CATS[k]; });
+  Object.keys(cats).forEach(k => { CATS[k] = cats[k]; });
+  MODELS.length = 0;
+  models.forEach(m => MODELS.push(m));
+  MM.reindex(); MM.rebuildTabs(); MM.refreshMeta(); render();
+};
+
+MM.reindex = () => {
+  Object.keys(byName).forEach(k => { delete byName[k]; });
+  Object.keys(noMap).forEach(k => { delete noMap[k]; });
+  MODELS.forEach(m => { byName[m.name] = m; noMap[m.no] = m; });
+};
+MM.rebuildTabs = () => {
+  const names = ['全部', ...Object.keys(CATS)];
+  if (!names.includes(curCat)) curCat = '全部';
+  tabsEl.innerHTML = names.map(c => {
+    const n = c === '全部' ? MODELS.length : MODELS.filter(m => m.cat === c).length;
+    return `<div class="tab${c === curCat ? ' on' : ''}" data-cat="${c}">${c}<small>${n}</small></div>`;
+  }).join('');
+};
+MM.refreshMeta = () => {
+  document.getElementById('metaCount').textContent = '共收錄 ' + MODELS.length + ' 個模型';
+  document.getElementById('navMeta').textContent = MODELS.length + ' 個模型 · 五根分類';
+};
+
+/* ---------- 草稿 / 未推送狀態 ---------- */
+MM.persistDraft = () => {
+  const snap = MM.snapshot();
+  if (snap === MM.fileSnap) localStorage.removeItem(MM.LS.draft);
+  else MM.lsSet(MM.LS.draft, { snap, at: Date.now() });
+  MM.updateDirty();
+};
+MM.isDirty = () => {
+  const pushed = MM.lsGet(MM.LS.pushed);
+  return MM.snapshot() !== (pushed && pushed.snap ? pushed.snap : MM.fileSnap);
+};
+MM.updateDirty = () => {
+  const d = MM.isDirty();
+  const b = document.getElementById('syncBtn');
+  b.classList.toggle('dirty', d);
+  b.title = d ? '有未推送到 GitHub 的修改' : '內容與最近一次同步一致';
+};
+
+/* ---------- toast ---------- */
+MM.toast = (msg, err) => {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (err ? ' err' : '');
+  clearTimeout(MM._tt);
+  MM._tt = setTimeout(() => { t.className = 'toast'; }, err ? 4200 : 2400);
+};
+
+/* ---------- 編輯模式開關 ---------- */
+MM.setEditMode = on => {
+  MM.editMode = on;
+  document.body.classList.toggle('editmode', on);
+  document.getElementById('editToggle').classList.toggle('on', on);
+  document.getElementById('editHint').className = 'edit-hint' + (on ? ' show' : '');
+  document.getElementById('editThis').style.display = (on && MM.curNo) ? '' : 'none';
+  MM.lsSet('mm_editmode', on);
+};
+
+/* ---------- 詳情頁：讀取模式包一層，記住當前模型 ---------- */
+const _openDetail = window.openDetail;
+window.openDetail = function(no){
+  MM.curNo = no;
+  _openDetail(no);
+  document.getElementById('editThis').style.display = MM.editMode ? '' : 'none';
+};
+const _closeDetail = window.closeDetail;
+window.closeDetail = function(){
+  MM.curNo = null;
+  document.getElementById('editThis').style.display = 'none';
+  _closeDetail();
+};
+
+/* ---------- 編輯表單 ---------- */
+const lines = v => (Array.isArray(v) ? v : []).join('\n');
+const toList = s => s.split('\n').map(x => x.trim()).filter(Boolean);
+const nextNo = () => {
+  const max = MODELS.reduce((a,m) => Math.max(a, parseInt(m.no,10) || 0), 0);
+  return String(max + 1).padStart(3,'0');
+};
+
+MM.startEdit = function(no){
+  const isNew = no === '__new__';
+  const m = isNew
+    ? { no: nextNo(), name:'', cat:Object.keys(CATS)[0], tag:'', bv:'', thought:'',
+        points:[], scenes:[], explain:'', extend:'', tips:'', related:[] }
+    : noMap[no];
+  if (!m) return;
+  const color = cc(m.cat);
+  const catOpts = Object.keys(CATS).map(c =>
+    `<option value="${esc(c)}"${c === m.cat ? ' selected' : ''}>${esc(c)}</option>`).join('');
+
+  detailBody.innerHTML = `
+    <div class="ed-head" style="--cc:${color}">
+      <h2>${isNew ? '新增模型' : '編輯：' + esc(m.name)}</h2>
+      <span class="who">${isNew ? '將加入為 No.' + esc(m.no) : 'No.' + esc(m.no)}</span>
+    </div>
+    <p class="ed-note">直接改下面欄位 → 按「儲存」立即生效並存成本地草稿；要寫回 GitHub 請按右上「⇅ 同步」。<br>清單類欄位（關鍵要點 / 適用場景 / 同根模型）<b>一行一項</b>。</p>
+
+    <div class="frow">
+      <div class="f${isNew ? '' : ' ro'}"><label>編號 No.</label>
+        <input type="text" id="ed_no" value="${esc(m.no)}"${isNew ? '' : ' readonly'}></div>
+      <div class="f"><label>分類（五根）</label><select id="ed_cat">${catOpts}</select></div>
+    </div>
+    <div class="f"><label>模型名稱</label><input type="text" id="ed_name" value="${esc(m.name)}"></div>
+    <div class="f"><label>一句話簡介（卡片上顯示）</label><textarea id="ed_tag" rows="2">${esc(m.tag)}</textarea></div>
+    <div class="f"><label>核心思想</label><textarea id="ed_thought" rows="3">${esc(m.thought)}</textarea></div>
+    <div class="f"><label>關鍵要點（一行一項）</label><textarea id="ed_points" rows="6">${esc(lines(m.points))}</textarea></div>
+    <div class="f"><label>適用場景（一行一項）</label><textarea id="ed_scenes" rows="5">${esc(lines(m.scenes))}</textarea></div>
+    <div class="f"><label>博主講解</label><textarea id="ed_explain" rows="6">${esc(m.explain)}</textarea></div>
+    <div class="f"><label>延伸學習</label><textarea id="ed_extend" rows="4">${esc(m.extend)}</textarea></div>
+    <div class="f"><label>實用提醒</label><textarea id="ed_tips" rows="4">${esc(m.tips)}</textarea></div>
+    <div class="f"><label>同根模型（一行一個名稱）</label><textarea id="ed_related" rows="4">${esc(lines(m.related))}</textarea>
+      <div class="tipline">名稱與現有模型一致時會自動變成可點擊的跳轉標籤。</div></div>
+    <div class="f"><label>Bilibili BV 號</label><input type="text" id="ed_bv" value="${esc(m.bv)}">
+      <div class="tipline">例：BV1xx411c7XX，會組成頁尾原視頻連結。</div></div>
+
+    <div class="ed-actions">
+      <button class="btn" onclick="MM.saveEdit(${isNew ? 'true' : 'false'})">儲存</button>
+      <button class="btn ghost" onclick="MM.cancelEdit('${isNew ? '' : esc(m.no)}')">取消</button>
+      ${isNew ? '' : `<button class="btn danger" onclick="MM.delModel('${esc(m.no)}')">刪除此模型</button>`}
+    </div>`;
+  crumb.textContent = (isNew ? '新增' : '編輯') + ' · ' + (isNew ? '未儲存' : 'No.' + m.no);
+  detail.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  detail.scrollTop = 0;
+  document.getElementById('editThis').style.display = 'none';
+  MM._editingNew = isNew;
+  MM._editingNo = m.no;
+};
+
+MM.saveEdit = function(isNew){
+  const val = id => document.getElementById('ed_' + id).value;
+  const no = val('no').trim(), name = val('name').trim();
+  if (!no)   return MM.toast('編號不能空白', true);
+  if (!name) return MM.toast('模型名稱不能空白', true);
+  if (isNew && noMap[no]) return MM.toast('編號 ' + no + ' 已存在，換一個', true);
+
+  const obj = {
+    no, name, cat: val('cat'), tag: val('tag').trim(), bv: val('bv').trim(),
+    thought: val('thought').trim(), points: toList(val('points')), scenes: toList(val('scenes')),
+    explain: val('explain').trim(), extend: val('extend').trim(), tips: val('tips').trim(),
+    related: toList(val('related'))
+  };
+  if (isNew) MODELS.push(obj);
+  else {
+    const t = noMap[MM._editingNo];
+    const oldName = t.name;
+    MM.FIELDS.forEach(f => { t[f] = obj[f]; });
+    if (oldName !== obj.name) delete byName[oldName];
+  }
+  MODELS.sort((a,b) => String(a.no).localeCompare(String(b.no)));
+  MM.reindex(); MM.rebuildTabs(); MM.refreshMeta(); render(); MM.persistDraft();
+  MM.toast('已儲存「' + name + '」（本地草稿，尚未推送）');
+  window.openDetail(no);
+};
+
+MM.cancelEdit = function(no){
+  if (no && noMap[no]) window.openDetail(no);
+  else window.closeDetail();
+};
+
+MM.delModel = function(no){
+  const m = noMap[no]; if (!m) return;
+  if (!confirm('確定刪除 No.' + no + '「' + m.name + '」？\n刪除後仍可按「棄用本地草稿」還原到上次同步的版本。')) return;
+  MODELS.splice(MODELS.findIndex(x => x.no === no), 1);
+  MM.reindex(); MM.rebuildTabs(); MM.refreshMeta(); render(); MM.persistDraft();
+  window.closeDetail();
+  MM.toast('已刪除 No.' + no + '（本地草稿）');
+};
+</script>
+<script>
+/* ============================================================
+   GitHub 同步層：把 data.js 拉下來 / 推回去（Contents API）
+   Token 只存本機 localStorage，不會寫進任何檔案
+   ============================================================ */
+MM.CFG_DEFAULT = { owner:'Lester8-l', repo:'mind-models', branch:'main', path:'data.js',
+                   msg:'chore: 更新 data.js（網頁編輯器）', auto:false };
+MM.cfg = Object.assign({}, MM.CFG_DEFAULT, MM.lsGet(MM.LS.cfg) || {});
+MM.token = () => localStorage.getItem(MM.LS.token) || '';
+
+/* ---------- UI 注入 ---------- */
+document.querySelector('nav .wrap').insertAdjacentHTML('beforeend', `
+  <div class="nav-actions">
+    <button class="mini-btn" id="editToggle" title="開啟後可直接在頁面修改內容">✎ 編輯模式</button>
+    <button class="mini-btn" id="syncBtn" title="與 GitHub 同步">⇅ 同步<span class="dot-dirty"></span></button>
+  </div>`);
+
+document.getElementById('home').insertAdjacentHTML('afterbegin', `
+  <div class="edit-hint" id="editHint">
+    <span class="grow">編輯模式已開啟：點任一卡片進入詳情，按左上「✎ 編輯」修改內容；改完在「⇅ 同步」推回 GitHub。</span>
+    <button class="new-btn" onclick="MM.startEdit('__new__')">＋ 新增模型</button>
+  </div>`);
+
+document.querySelector('.detail-bar .wrap').insertAdjacentHTML('beforeend', `
+  <button class="back-btn" id="editThis" style="display:none;margin-left:auto"
+          onclick="MM.startEdit(MM.curNo)">✎ 編輯此篇</button>`);
+
+document.body.insertAdjacentHTML('beforeend', `
+  <div class="modal" id="syncModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3>同步到 GitHub</h3>
+        <button class="x-btn" onclick="MM.closeSync()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="sync-state" id="syncState"></div>
+        <div class="f"><label>GitHub Token（需 repo 寫入權限）</label>
+          <input type="password" id="cfgToken" placeholder="ghp_… 或 github_pat_…" autocomplete="off"></div>
+        <div class="frow">
+          <div class="f"><label>Owner</label><input type="text" id="cfgOwner"></div>
+          <div class="f"><label>Repo</label><input type="text" id="cfgRepo"></div>
+        </div>
+        <div class="frow">
+          <div class="f"><label>Branch</label><input type="text" id="cfgBranch"></div>
+          <div class="f"><label>檔案路徑</label><input type="text" id="cfgPath"></div>
+        </div>
+        <div class="f"><label>Commit 訊息</label><input type="text" id="cfgMsg"></div>
+        <label class="chk"><input type="checkbox" id="cfgAuto">
+          <span>每次開啟頁面時，自動從 GitHub 拉取最新內容（沒有未推送修改時才會拉）</span></label>
+        <div class="modal-actions">
+          <button class="btn" onclick="MM.push()">推送到 GitHub</button>
+          <button class="btn ghost" onclick="MM.pull(false)">拉取遠端最新</button>
+          <button class="btn ghost" onclick="MM.download()">下載 data.js</button>
+          <button class="btn danger" onclick="MM.discard()">棄用本地草稿</button>
+        </div>
+        <pre class="log" id="syncLog"></pre>
+        <p class="hint">Token 只保存在這台電腦的瀏覽器（localStorage），不會寫入 data.js、也不會隨頁面上傳。建議用 Fine-grained token 並只授權這個 repo 的 Contents 讀寫。</p>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>`);
+
+/* ---------- 小工具 ---------- */
+const b64enc = s => { const by = new TextEncoder().encode(s); let bin=''; by.forEach(b => bin += String.fromCharCode(b)); return btoa(bin); };
+const b64dec = s => new TextDecoder().decode(Uint8Array.from(atob(String(s).replace(/\s/g,'')), c => c.charCodeAt(0)));
+MM.log = (m, clear) => {
+  const el = document.getElementById('syncLog');
+  el.classList.add('show');
+  el.textContent = (clear ? '' : el.textContent + (el.textContent ? '\n' : '')) + m;
+  el.scrollTop = el.scrollHeight;
+};
+MM.apiUrl = () => `https://api.github.com/repos/${MM.cfg.owner}/${MM.cfg.repo}/contents/`
+  + MM.cfg.path.split('/').map(encodeURIComponent).join('/');
+MM.headers = () => {
+  const h = { 'Accept':'application/vnd.github+json', 'X-GitHub-Api-Version':'2022-11-28' };
+  const t = MM.token(); if (t) h.Authorization = 'Bearer ' + t;
+  return h;
+};
+MM.parseDataJs = txt => {
+  const o = new Function(txt + '\nreturn { CATS: typeof CATS!=="undefined"?CATS:null, MODELS: typeof MODELS!=="undefined"?MODELS:null };')();
+  if (!o.CATS || !Array.isArray(o.MODELS) || !o.MODELS.length) throw new Error('data.js 內容不含有效的 CATS / MODELS');
+  return o;
+};
+
+/* ---------- 設定面板 ---------- */
+MM.openSync = () => {
+  const c = MM.cfg;
+  document.getElementById('cfgToken').value  = MM.token();
+  document.getElementById('cfgOwner').value  = c.owner;
+  document.getElementById('cfgRepo').value   = c.repo;
+  document.getElementById('cfgBranch').value = c.branch;
+  document.getElementById('cfgPath').value   = c.path;
+  document.getElementById('cfgMsg').value    = c.msg;
+  document.getElementById('cfgAuto').checked = !!c.auto;
+  const pushed = MM.lsGet(MM.LS.pushed);
+  const dirty = MM.isDirty();
+  document.getElementById('syncState').innerHTML =
+    `本地共 <b>${MODELS.length}</b> 個模型 · 狀態：` +
+    (dirty ? '<span class="warn">有未推送的修改</span>' : '<b>已與最近一次同步一致</b>') +
+    (pushed && pushed.at ? `<br>最近同步：${new Date(pushed.at).toLocaleString('zh-Hant')}` : '<br>尚未做過同步');
+  document.getElementById('syncLog').className = 'log';
+  document.getElementById('syncModal').classList.add('open');
+};
+MM.closeSync = () => {
+  MM.cfg = { owner:v('cfgOwner')||MM.CFG_DEFAULT.owner, repo:v('cfgRepo')||MM.CFG_DEFAULT.repo,
+             branch:v('cfgBranch')||'main', path:v('cfgPath')||'data.js',
+             msg:v('cfgMsg')||MM.CFG_DEFAULT.msg, auto:document.getElementById('cfgAuto').checked };
+  MM.lsSet(MM.LS.cfg, MM.cfg);
+  const t = v('cfgToken');
+  if (t) localStorage.setItem(MM.LS.token, t); else localStorage.removeItem(MM.LS.token);
+  document.getElementById('syncModal').classList.remove('open');
+};
+function v(id){ return document.getElementById(id).value.trim(); }
+MM.saveCfgInline = () => {
+  MM.cfg = Object.assign(MM.cfg, { owner:v('cfgOwner'), repo:v('cfgRepo'), branch:v('cfgBranch')||'main',
+                                   path:v('cfgPath')||'data.js', msg:v('cfgMsg')||MM.CFG_DEFAULT.msg,
+                                   auto:document.getElementById('cfgAuto').checked });
+  MM.lsSet(MM.LS.cfg, MM.cfg);
+  const t = v('cfgToken');
+  if (t) localStorage.setItem(MM.LS.token, t); else localStorage.removeItem(MM.LS.token);
+};
+
+/* ---------- 推送 ---------- */
+MM.push = async () => {
+  MM.saveCfgInline();
+  if (!MM.token()) return MM.log('✗ 請先填 GitHub Token（需要 repo Contents 寫入權限）', true);
+  const text = MM.serialize();
+  try { MM.parseDataJs(text); } catch(e){ return MM.log('✗ 產生的 data.js 無法解析，已中止：' + e.message, true); }
+  MM.log('① 讀取遠端 ' + MM.cfg.path + ' 的 sha …', true);
+  try{
+    let sha = null;
+    const g = await fetch(MM.apiUrl() + '?ref=' + encodeURIComponent(MM.cfg.branch), { headers: MM.headers() });
+    if (g.status === 200) { sha = (await g.json()).sha; MM.log('   已存在，sha=' + sha.slice(0,10) + '…'); }
+    else if (g.status === 404) MM.log('   遠端還沒有這個檔案，將新建');
+    else throw new Error('讀取失敗 HTTP ' + g.status + ' ' + ((await g.json().catch(()=>({}))).message || ''));
+
+    MM.log('② 上傳中（' + (text.length/1024).toFixed(1) + ' KB）…');
+    const p = await fetch(MM.apiUrl(), {
+      method:'PUT', headers: Object.assign({'Content-Type':'application/json'}, MM.headers()),
+      body: JSON.stringify({ message: MM.cfg.msg, content: b64enc(text), branch: MM.cfg.branch, sha: sha || undefined })
+    });
+    const pj = await p.json().catch(()=>({}));
+    if (!p.ok) throw new Error('HTTP ' + p.status + ' ' + (pj.message || ''));
+    MM.lsSet(MM.LS.pushed, { snap: MM.snapshot(), at: Date.now() });
+    MM.updateDirty();
+    const c = pj.commit || {};
+    MM.log('✓ 推送成功　commit ' + String(c.sha||'').slice(0,7) + '\n   ' + (c.html_url || ''));
+    MM.toast('已推送到 GitHub：' + MM.cfg.owner + '/' + MM.cfg.repo);
+  }catch(e){
+    MM.log('✗ 推送失敗：' + e.message + '\n（常見原因：token 沒有該 repo 的 Contents 寫入權限、branch 名稱不對、路徑不存在）');
+    MM.toast('推送失敗：' + e.message, true);
+  }
+};
+
+/* ---------- 拉取 ---------- */
+MM.pull = async silent => {
+  MM.saveCfgInline();
+  if (!silent && MM.isDirty() && !confirm('本地有未推送的修改，拉取會用遠端內容覆蓋。要繼續嗎？')) return;
+  const raw = `https://raw.githubusercontent.com/${MM.cfg.owner}/${MM.cfg.repo}/${MM.cfg.branch}/${MM.cfg.path}?t=` + Date.now();
+  if (!silent) MM.log('① 讀取遠端內容 …', true);
+  try{
+    let text;
+    if (MM.token()){
+      const r = await fetch(MM.apiUrl() + '?ref=' + encodeURIComponent(MM.cfg.branch), { headers: MM.headers() });
+      if (!r.ok) throw new Error('HTTP ' + r.status + ' ' + ((await r.json().catch(()=>({}))).message || ''));
+      text = b64dec((await r.json()).content);
+    } else {
+      const r = await fetch(raw, { cache:'no-store' });
+      if (!r.ok) throw new Error('HTTP ' + r.status + '（私有 repo 請填 token）');
+      text = await r.text();
+    }
+    const o = MM.parseDataJs(text);
+    MM.applyData(o.CATS, o.MODELS);
+    MM.fileSnap = MM.snapshot();
+    localStorage.removeItem(MM.LS.draft);
+    MM.lsSet(MM.LS.pushed, { snap: MM.snapshot(), at: Date.now() });
+    MM.updateDirty();
+    if (!silent){ MM.log('✓ 已載入遠端內容：' + o.MODELS.length + ' 個模型'); MM.toast('已拉取遠端最新內容（' + o.MODELS.length + ' 個模型）'); }
+    else console.log('[MM] 自動拉取成功：' + o.MODELS.length + ' 個模型');
+  }catch(e){
+    if (!silent){ MM.log('✗ 拉取失敗：' + e.message); MM.toast('拉取失敗：' + e.message, true); }
+    else console.warn('[MM] 自動拉取失敗：' + e.message);
+  }
+};
+
+/* ---------- 下載 / 棄用草稿 ---------- */
+MM.download = () => {
+  const blob = new Blob([MM.serialize()], { type:'text/javascript;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'data.js';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+  MM.toast('已下載 data.js，覆蓋原檔即可離線生效');
+};
+MM.discard = () => {
+  if (!localStorage.getItem(MM.LS.draft)) return MM.toast('目前沒有本地草稿');
+  if (!confirm('棄用本地草稿，回到 data.js 原本的內容？此動作無法復原。')) return;
+  localStorage.removeItem(MM.LS.draft);
+  localStorage.removeItem(MM.LS.pushed);
+  location.reload();
+};
+
+/* ---------- 事件綁定 ---------- */
+document.getElementById('editToggle').addEventListener('click', () => MM.setEditMode(!MM.editMode));
+document.getElementById('syncBtn').addEventListener('click', MM.openSync);
+document.getElementById('syncModal').addEventListener('click', e => { if (e.target.id === 'syncModal') MM.closeSync(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('syncModal').classList.contains('open')){
+    e.stopImmediatePropagation(); MM.closeSync();
+  }
+}, true);
+
+/* ---------- 啟動：載入草稿 / 還原編輯模式 / 自動拉取 ---------- */
+(function init(){
+  const draft = MM.lsGet(MM.LS.draft);
+  if (draft && draft.snap && draft.snap !== MM.fileSnap){
+    try{
+      const d = JSON.parse(draft.snap);
+      MM.applyData(d.CATS, d.MODELS);
+      MM.toast('已載入本地草稿（' + new Date(draft.at).toLocaleString('zh-Hant') + '）');
+    }catch(e){ console.warn('草稿載入失敗', e); }
+  }
+  MM.setEditMode(!!MM.lsGet('mm_editmode'));
+  MM.updateDirty();
+  if (MM.cfg.auto && !MM.isDirty()) MM.pull(true);
+})();
+</script>
+</body>
+</html>
