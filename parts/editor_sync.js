@@ -164,9 +164,15 @@ MM.pull = async silent => {
       if (!r.ok) throw new Error('HTTP ' + r.status + ' ' + ((await r.json().catch(()=>({}))).message || ''));
       text = b64dec((await r.json()).content);
     } else {
-      const r = await fetch(raw, { cache:'no-store' });
-      if (!r.ok) throw new Error('HTTP ' + r.status + '（私有 repo 請填 token）');
-      text = await r.text();
+      /* 無 token：先試 raw，被限流（429）或失敗時改走 Contents API 匿名讀取 */
+      let r = await fetch(raw, { cache:'no-store' }).catch(() => null);
+      if (r && r.ok) text = await r.text();
+      else {
+        if (!silent) MM.log('   raw 取檔失敗' + (r ? '（HTTP ' + r.status + '）' : '') + '，改用 GitHub API …');
+        const r2 = await fetch(MM.apiUrl() + '?ref=' + encodeURIComponent(MM.cfg.branch), { headers: MM.headers() });
+        if (!r2.ok) throw new Error('HTTP ' + r2.status + ' ' + ((await r2.json().catch(()=>({}))).message || '（私有 repo 請填 token）'));
+        text = b64dec((await r2.json()).content);
+      }
     }
     const o = MM.parseDataJs(text);
     MM.applyData(o.CATS, o.MODELS);
