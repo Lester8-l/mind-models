@@ -1,0 +1,24 @@
+name: rebuild data
+on:
+  push:
+    paths:
+      - 'models/**'
+      - 'build.py'
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python build.py
+      - name: commit regenerated data.json
+        run: |
+          git config user.name "mind-models bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data.json
+          git commit -m "auto: rebuild data.json" || echo "no change"
+          git push
