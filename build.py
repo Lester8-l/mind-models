@@ -60,8 +60,9 @@ def parse_md(text):
     list_key = None
     for line in fm.split("\n"):
         s = line.rstrip()
-        if s[:2] in ("- ", "  -") or s == "-":
-            item = s.lstrip("- ").strip()
+        stripped = s.lstrip()
+        if stripped.startswith("- ") or stripped == "-":
+            item = stripped.lstrip("- ").strip()
             if list_key:
                 meta.setdefault(list_key, []).append(item)
             continue
